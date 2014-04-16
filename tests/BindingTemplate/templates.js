@@ -891,9 +891,11 @@ CorsicaTests.TemplateCompilerTests = function () {
 
     this.testStyleOptimizations = async(function () {
 
+        var transform = WinJS.Utilities._browserStyleEquivalents["transform"];
+
         var templateDiv = document.createElement("div");
         templateDiv.innerHTML = "<div>\
-<div class='target' data-win-bind='style.backgroundColor: color; style.msTransform: transform; style.background: background; style.purplePeopleEater: something;'></div>\
+<div class='target' data-win-bind='style.backgroundColor: color; style." + transform.scriptName + ": transform; style.background: background; style.purplePeopleEater: something;'></div>\
 </div>";
 
         var template = new WinJS.Binding.Template(templateDiv);
@@ -907,7 +909,7 @@ CorsicaTests.TemplateCompilerTests = function () {
         // Assert that the supported style properties get turned into CSS style named properties
         //
         LiveUnit.Assert.areNotEqual(-1, string.indexOf("background-color:"));
-        LiveUnit.Assert.areNotEqual(-1, string.indexOf("-ms-transform:"));
+        LiveUnit.Assert.areNotEqual(-1, string.indexOf(transform.cssName + ":"));
         LiveUnit.Assert.areNotEqual(-1, string.indexOf("background:"));
 
         // Assert that my new property doesn't get turned into a text replacement because it isn't part of the
@@ -923,7 +925,7 @@ CorsicaTests.TemplateCompilerTests = function () {
         return template.render({ color: "red", transform: "translateX(10px)", background: "purple" }).then(function (d) {
             var target = d.querySelector('.target');
             LiveUnit.Assert.areEqual("purple", target.style.backgroundColor);
-            LiveUnit.Assert.areEqual("translateX(10px)", target.style.msTransform);
+            LiveUnit.Assert.areEqual("translateX(10px)", target.style[transform.scriptName]);
         });
 
     });
