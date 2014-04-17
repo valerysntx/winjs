@@ -21,8 +21,6 @@
         }, root);
     }
 
-    // This may need to be updated for Mozilla prefixes, where the script name of a prefixed CSS name is supposed to be capitalized (eg, MozTransitionDuration).
-    // We currently don't have any styles that use a -moz- prefix, so this function doesn't test for that case right now.
     function getCamelCasedName(styleName) {
         if (styleName.length > 0 && styleName.charAt(0) === "-") {
             styleName = styleName.slice(1);
@@ -39,7 +37,7 @@
     }
 
     function addPrefixToCSSName(prefix, name) {
-        return (prefix !== "" ? "-" + prefix + "-" : "") + name;
+        return (prefix !== "" ? "-" + prefix.toLowerCase() + "-" : "") + name;
     }
 
     function getBrowserStyleEquivalents() {
@@ -50,7 +48,7 @@
 
         var equivalents = {},
             docStyle = document.documentElement.style,
-            stylePrefixesToTest = ["", "webkit", "ms"], // It may be necessary to update the function getCamelCasedName to handle moz prefixes, if moz is added to this array
+            stylePrefixesToTest = ["", "webkit", "ms", "Moz"],
             styles = ["animation",
                 "transition",
                 "transform",
@@ -78,6 +76,7 @@
                 "scroll-snap-x",
                 "scroll-snap-y",
                 "overflow-style",
+                "user-select" // used for Template Compiler test
             ],
             prefixesUsedOnStyles = {};
 
