@@ -118,7 +118,7 @@ CorsicaTests.TemplatesTestBase = function () {
         holder.id = "testObTemplateStyleBindDeepNested";
         holder.innerHTML = "<div>"
         + "<div id='testObTemplateStyleBindDeepNested2' data-win-control='WinJS.Binding.Template'><div data-win-bind='child:q testObTemplateStyleBindDeepNested2Child'></div></div>"
-        + "<div id='testObTemplateStyleBindDeepNested2Child' data-win-control='WinJS.Binding.Template'><div data-win-bind='style.background: x; textContent: y'></div></div>"
+        + "<div id='testObTemplateStyleBindDeepNested2Child' data-win-control='WinJS.Binding.Template'><div data-win-bind='style.backgroundColor: x; textContent: y'></div></div>"
         + "</div>";
 
         var data = as({ q: as({ x: "blue", y: 2 }) });
@@ -129,7 +129,7 @@ CorsicaTests.TemplatesTestBase = function () {
             return template.render(data);
         }).then(timeout(32)).then(function (d) {
             LiveUnit.Assert.areEqual("2", d.textContent.trim());
-            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.background);
+            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.backgroundColor);
         });
 
     });
@@ -140,7 +140,7 @@ CorsicaTests.TemplatesTestBase = function () {
         holder.id = "testObTemplateStyleBindDeepNested";
         holder.innerHTML = "<div>"
         + "<div id='testObTemplateStyleBindDeepNested2' data-win-control='WinJS.Binding.Template'><div data-win-bind='child:q testObTemplateStyleBindDeepNested2Child'></div><div data-win-control='MyCustomControl' data-win-control='{ maxRating: 1 }' data-win-bind='winControl.userRating: y'></div></div>"
-        + "<div id='testObTemplateStyleBindDeepNested2Child' data-win-control='WinJS.Binding.Template'><div data-win-bind='style.background: x; textContent: y'></div></div>"
+        + "<div id='testObTemplateStyleBindDeepNested2Child' data-win-control='WinJS.Binding.Template'><div data-win-bind='style.backgroundColor: x; textContent: y'></div></div>"
         + "</div>";
 
         var data = as({ q: as({ x: "blue", y: 2 }) });
@@ -151,7 +151,7 @@ CorsicaTests.TemplatesTestBase = function () {
             return template.render(data);
         }).then(timeout(32)).then(function (d) {
             LiveUnit.Assert.areEqual("2", d.textContent.trim());
-            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.background);
+            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.backgroundColor);
         });
 
     });
@@ -160,13 +160,13 @@ CorsicaTests.TemplatesTestBase = function () {
 
         var holder = document.createElement("div");
         holder.id = "testObTemplateStyleBind";
-        holder.innerHTML = "<div id='testObTemplateStyleBind2'><div data-win-bind='style.background: x; textContent: y'></div></div>";
+        holder.innerHTML = "<div id='testObTemplateStyleBind2'><div data-win-bind='style.backgroundColor: x; textContent: y'></div></div>";
 
         var data = as({ x: "blue", y: 2 });
 
         return this._render(new Template(holder), data).then(function (d) {
             LiveUnit.Assert.areEqual("2", d.textContent.trim());
-            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.background);
+            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.backgroundColor);
         });
 
     });
@@ -175,7 +175,7 @@ CorsicaTests.TemplatesTestBase = function () {
 
         var holder = document.createElement("div");
         holder.id = "testObTemplateStyleBindDeep";
-        holder.innerHTML = "<div id='testObTemplateStyleBindDeep2'><div data-win-bind='style.background: q.x; textContent: q.y'></div></div>";
+        holder.innerHTML = "<div id='testObTemplateStyleBindDeep2'><div data-win-bind='style.backgroundColor: q.x; textContent: q.y'></div></div>";
 
         var data = as({ q: as({ x: "blue", y: 2 }) });
 
@@ -183,7 +183,7 @@ CorsicaTests.TemplatesTestBase = function () {
 
         return this._render(template, data).then(timeout(32)).then(function (d) {
             LiveUnit.Assert.areEqual("2", d.textContent.trim());
-            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.background);
+            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.backgroundColor);
         });
 
     });
@@ -192,7 +192,7 @@ CorsicaTests.TemplatesTestBase = function () {
 
         var holder = document.createElement("div");
         holder.id = "testTemplateStyleBind";
-        holder.innerHTML = "<div id='testTemplateStyleBind2'><div data-win-bind='style.background: x; textContent: y'></div></div>";
+        holder.innerHTML = "<div id='testTemplateStyleBind2'><div data-win-bind='style.backgroundColor: x; textContent: y'></div></div>";
 
         var data = { x: "blue", y: 2 };
 
@@ -200,7 +200,7 @@ CorsicaTests.TemplatesTestBase = function () {
 
         return this._render(template, data).then(function (d) {
             LiveUnit.Assert.areEqual("2", d.textContent.trim());
-            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.background);
+            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.backgroundColor);
         });
 
     });
@@ -209,14 +209,14 @@ CorsicaTests.TemplatesTestBase = function () {
 
         var holder = document.createElement("div");
         holder.id = "testTemplateStyleBindDeep";
-        holder.innerHTML = "<div id='testTemplateStyleBindDeep2'><div data-win-bind='style.background: q.x; textContent: q.y'></div></div>";
+        holder.innerHTML = "<div id='testTemplateStyleBindDeep2'><div data-win-bind='style.backgroundColor: q.x; textContent: q.y'></div></div>";
 
         var data = { q: { x: "blue", y: 2 } };
         var template = new Template(holder);
 
         return this._render(template, data).then(function (d) {
             LiveUnit.Assert.areEqual("2", d.textContent.trim());
-            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.background);
+            LiveUnit.Assert.areEqual("blue", d.firstChild.firstChild.style.backgroundColor);
         });
 
     });
@@ -441,7 +441,11 @@ CorsicaTests.TemplatesTestBase = function () {
         var data = as({ a: null });
 
         return this._render(new Template(holder), data).then(function (d) {
-            LiveUnit.Assert.areEqual("undefined", d.querySelector(".content").textContent);
+            var content = d.querySelector(".content").textContent;
+            // Firefox has a bug where undefined gets coerced to empty string
+            if(content !== "undefined" && content !== "") {
+                LiveUnit.Assert.fail("Binding to an empty object should set textContent to undefined.");
+            }
         });
 
     });
