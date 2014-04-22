@@ -41,6 +41,39 @@
                 testname: "winjs qunit tests",
                 tags: ["winjs"]
             }
+        },
+        ie11only: {
+            options: {
+                urls: [
+                    "http://127.0.0.1:9999/bin/tests/Animations/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/AppBarAndFlyouts/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/Base/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/DateTime/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/FlipView/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/Hub/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/Itemsmanager/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/ListView/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/ListViewIntegration/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/NavBar/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/Rating/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/Scheduler/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/SearchBox/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/SemanticZoom/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/Toggle/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/Tooltip/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/UI/test.html?autostart",
+                    "http://127.0.0.1:9999/bin/tests/ViewBox/test.html?autostart",
+                ],
+                build: process.env.TRAVIS_JOB_ID,
+                testInterval: 1000,
+                browsers: [{
+                    browserName: "internet explorer",
+                    platform: "WIN8.1",
+                    version: "11"
+                }],
+                testname: "winjs qunit tests - ie11only",
+                tags: ["winjs"]
+            }
         }
     };
 })();
