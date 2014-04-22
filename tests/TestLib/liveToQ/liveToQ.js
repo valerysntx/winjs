@@ -3,13 +3,15 @@
 (function () {
     var qUnitGlobalErrorHandler = window.onerror;
 
+    var testTimeout = 30000;
+    var hasRun = false;
     var testFailed = false;
     var testError = "";
     var verboseLog = "";
     var log = [];
 
     QUnit.config.autostart = false;
-    QUnit.config.testTimeout = 30000;
+    QUnit.config.testTimeout = testTimeout;
     QUnit.config.hidepassed = true;
     QUnit.breakOnAssertFail = false;
 
@@ -36,24 +38,45 @@
             toolBar.appendChild(cb);
             toolBar.appendChild(span);
 
+            cb = document.createElement("input");
+            cb.type = "checkbox";
+            cb.onchange = function () {
+                QUnit.config.testTimeout = cb.checked ? undefined : testTimeout;
+            };
+            var span = document.createElement("span");
+            span.innerHTML = "Disable test timeout";
+            toolBar.appendChild(cb);
+            toolBar.appendChild(span);
+
             var btn = document.createElement("button");
             btn.style.borderColor = btn.style.color = "#5E740B";
             btn.style.marginLeft = "4px";
             btn.innerHTML = "Start";
             btn.onclick = function () {
-                QUnit.start();
+                if (!hasRun) {
+                    QUnit.start();
+                    hasRun = true;
+                } else {
+                    if (QUnit.urlParams.autostart === "true" || QUnit.urlParams.autostart === true) {
+                        window.location = window.location;
+                    } else {
+                        var qs = (window.location.search.indexOf("?") >= 0) ? "&" : "?";
+                        window.location = window.location.href + qs + "autostart=true";
+                    }
+                }
             };
             toolBar.appendChild(btn);
 
             if (QUnit.urlParams.autostart === "true" || QUnit.urlParams.autostart === true) {
                 QUnit.start();
+                hasRun = true;
             }
         }
         addOptions();
     });
 
-    if (QUnit.urlParams.unittesting === "true" || QUnit.urlParams.unittesting === true) {
-        WinJS.Utilities._unitTesting = true;
+    if (QUnit.urlParams.fastanimations === "true" || QUnit.urlParams.fastanimations === true) {
+        WinJS.Utilities._fastAnimations = true;
     }
 
     function completeTest() {
@@ -150,17 +173,16 @@
             }
         });
         test_results.tests = tests;
-
         window.global_test_results = test_results;
     });
 
     function formatString(string) {
         var args = arguments;
         if (args.length > 1) {
-            string = string.replace(/({{)|(}})|{(\d+)}|({)|(})/g, 
+            string = string.replace(/({{)|(}})|{(\d+)}|({)|(})/g,
                 function (unused, left, right, index, illegalLeft, illegalRight) {
-                    if (illegalLeft || illegalRight) { 
-                        throw new Error(formatString("Malformed string input: {0}", illegalLeft || illegalRight)); 
+                    if (illegalLeft || illegalRight) {
+                        throw new Error(formatString("Malformed string input: {0}", illegalLeft || illegalRight));
                     }
                     return (left && "{") || (right && "}") || args[(index | 0) + 1];
                 });
