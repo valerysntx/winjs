@@ -45,7 +45,8 @@
         ie11only: {
             options: {
                 urls: [
-                    "http://127.0.0.1:9999/bin/tests/Animations/test.html?unittesting&autostart",
+                    "http://127.0.0.1:9999/bin/tests/Animations/test.html?unittesting&autostart"
+                    /*,
                     "http://127.0.0.1:9999/bin/tests/AppBarAndFlyouts/test.html?unittesting&autostart",
                     "http://127.0.0.1:9999/bin/tests/Base/test.html?unittesting&autostart",
                     "http://127.0.0.1:9999/bin/tests/DateTime/test.html?unittesting&autostart",
@@ -62,7 +63,7 @@
                     "http://127.0.0.1:9999/bin/tests/Toggle/test.html?unittesting&autostart",
                     "http://127.0.0.1:9999/bin/tests/Tooltip/test.html?unittesting&autostart",
                     "http://127.0.0.1:9999/bin/tests/UI/test.html?unittesting&autostart",
-                    "http://127.0.0.1:9999/bin/tests/ViewBox/test.html?unittesting&autostart",
+                    "http://127.0.0.1:9999/bin/tests/ViewBox/test.html?unittesting&autostart",*/
                 ],
                 build: process.env.TRAVIS_JOB_ID,
                 testInterval: 1000,
@@ -72,7 +73,10 @@
                     version: "11"
                 }],
                 testname: "winjs qunit tests - ie11only",
-                tags: ["winjs"]
+                tags: ["winjs"],
+                onTestComplete: fuction(details) {
+                    grunt.log.writeln(JSON.stringify(details));
+                }
             }
         }
     };
