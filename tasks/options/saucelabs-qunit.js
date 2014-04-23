@@ -74,7 +74,7 @@
                 }],
                 testname: "winjs qunit tests - ie11only",
                 tags: ["winjs"],
-                onTestComplete: fuction(details) {
+                onTestComplete: function(details) {
                     grunt.log.writeln(JSON.stringify(details));
                 }
             }
