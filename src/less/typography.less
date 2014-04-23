@@ -22,6 +22,13 @@
     @win_font_face_small: "Segoe UI Semilight";
     @win_font_face_bold: "Segoe UI Bold";
 
+    @win_dark_text_high: rgba(0, 0, 0, 0.0);
+    @win_dark_text_medium: rgba(0, 0, 0, 0.6);
+    @win_dark_text_low: rgba(0, 0, 0, 0.4);
+    @win_light_text_high: rgba(255, 255, 255, 1.0);
+    @win_light_text_medium: rgba(255, 255, 255, 0.6);
+    @win_light_text_low: rgba(255, 255, 255, 0.4);
+
 }
 .fontSizes(phone) {
     @win_font_weight_xx_large: 300;
@@ -45,15 +52,16 @@
     @win_font_face_medium: "Segoe WP";
     @win_font_face_small: "Segoe WP Semilight";
     @win_font_face_bold: "Segoe WP Bold";
+
+    @win_dark_text_high: rgba(0, 0, 0, 0.87);
+    @win_dark_text_medium: rgba(0, 0, 0, 0.6);
+    @win_dark_text_low: rgba(0, 0, 0, 0.3);
+    @win_light_text_high: rgba(255, 255, 255, 1.0);
+    @win_light_text_medium: rgba(255, 255, 255, 0.6);
+    @win_light_text_low: rgba(255, 255, 255, 0.3);
 }
 .fontSizes(@platform);
 
-@win_dark_text_high: rgba(0, 0, 0, 0.87);
-@win_dark_text_medium: rgba(0, 0, 0, 0.6);
-@win_dark_text_low: rgba(0, 0, 0, 0.3);
-@win_light_text_high: ~"rgba(255, 255, 255, 1.0)";
-@win_light_text_medium: rgba(255, 255, 255, 0.6);
-@win_light_text_low: rgba(255, 255, 255, 0.3);
 
 // Symbol font face
 @font-face {

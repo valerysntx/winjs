@@ -1,28 +1,53 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 .Colors(@theme) {
 
+    // Panning indicator is only styled on phone
+    * when (@platform = phone) {
+        .mixin(dark) {
+            -ms-scrollbar-shadow-color: rgb(0, 0, 0);
+            -ms-scrollbar-face-color: rgb(255, 255, 255);
+        }
+        .mixin(light) {
+            -ms-scrollbar-shadow-color: rgb(255, 255, 255);
+            -ms-scrollbar-face-color: rgb(0, 0, 0);
+        }
+        .mixin(@theme);
+    }
+
     // These classes reverse the colors on the subtree to which they are applied.
     // Ensure that the opposite color scheme always comes after the rule that is for the current color scheme.
     // This ensures that an author using <div class="win-ui-dark win-ui-light"> will always get the rule for the
     // inverted scheme to match last and win.
+    .bodyTheme(dark) when (@platform = desktop) {
+        color: rgb(255, 255, 255);
+        background-color: rgb(29, 29, 29);
+    }
+    .bodyTheme(light) when (@platform = desktop) {
+        color: rgb(0, 0, 0);
+        background-color: rgb(255, 255, 255);
+    }
+    .bodyTheme(dark) when (@platform = phone) {
+        color: @win_light_text_high;
+        background-color: rgb(0, 0, 0);
+    }
+    .bodyTheme(light) when (@platform = phone) {
+        color: @win_dark_text_high;
+        background-color: rgb(255, 255, 255);
+    }
     .themeMixin(dark) {
         .win-ui-dark {
-            color: rgb(255, 255, 255);
-            background-color: rgb(29, 29, 29);
+            .bodyTheme(dark);
         }
         .win-ui-light {
-            color: rgb(0, 0, 0);
-            background-color: rgb(255, 255, 255);
+            .bodyTheme(light);
         }
     }
     .themeMixin(light) {
         .win-ui-light {
-            color: rgb(0, 0, 0);
-            background-color: rgb(255, 255, 255);
+            .bodyTheme(light);
         }
         .win-ui-dark {
-            color: rgb(255, 255, 255);
-            background-color: rgb(29, 29, 29);
+            .bodyTheme(dark);
         }
     }
     .themeMixin(@theme);
@@ -31,23 +56,21 @@
     // Body
     //
     body, input, textarea, select, button {
-        .mixin(dark) {
-            background-color: rgb(29, 29, 29);
-            color: rgb(255, 255, 255);
-        }
-        .mixin(light) {
-            background-color: rgb(255, 255, 255);
-            color: rgb(0, 0, 0);
-        }
-        .mixin(@theme);
+        .bodyTheme(@theme);
     }
 
     //
     // Text selection
     //
     ::selection {
-        background-color: rgb(87, 41, 193);
         color: rgb(255, 255, 255);
+
+        & when (@platform = desktop) {
+            background-color: rgb(87, 41, 193);
+        }
+        & when (@platform = phone) {
+            background-color: Highlight;
+        }
     }
 
     //
@@ -57,68 +80,112 @@
     input[type=email], input[type=number],
     input[type=tel], input[type=url],
     input[type=search], textarea, .win-textarea {
+        // Dark colors
         .mixin(dark) {
-            &:hover {
+            &:hover when (@platform = desktop) {
                 background-color: rgba(255, 255, 255, 0.87);
             }
 
             &:focus {
                 background-color: rgb(255, 255, 255);
+
+                & when (@platform = phone) {
+                    border-color: Highlight;
+                }
             }
 
             &:disabled {
                 background-color: transparent;
                 border-color: rgba(255, 255, 255, 0.4);
-                color: rgba(255, 255, 255, 0.4);
 
-                &:-ms-input-placeholder {
-                    color: rgba(255, 255, 255, 0.22);
+                & when (@platform = desktop) {
+                    color: rgba(255, 255, 255, 0.4);
+                }
+                & when (@platform = phone) {
+                    color: @win_light_text_low;
                 }
             }
 
-            &:-ms-input-placeholder {
-                color: rgba(0, 0, 0, 0.6);
+            &:disabled:-ms-input-placeholder when (@platform = desktop) {
+                color: rgba(255, 255, 255, 0.22);
+            }
+            &:disabled:-ms-input-placeholder when (@platform = phone) {
+                color: @win_light_text_low;
             }
 
-            background-color: rgba(255, 255, 255, 0.8);
-            border-color: transparent;
-            color: rgb(0, 0, 0);
+            & when (@platform = desktop) {
+                border-color: transparent;
+            }
+            & when (@platform = phone) {
+                background-color: rgba(255, 255, 255, 0.8);
+            }
         }
+        // Light colors
         .mixin(light) {
-            &:hover {
+            &:hover when (@platform = desktop) {
                 background-color: rgba(255, 255, 255, 0.87);
                 border-color: rgba(0, 0, 0, 0.44);
             }
 
             &:focus {
                 background-color: rgb(255, 255, 255);
-            }
 
-            &:disabled {
-                background-color: rgba(202, 202, 202, 0.4);
-                border-color: rgba(0, 0, 0, 0.15);
-                color: rgba(0, 0, 0, 0.4);
-
-                &:-ms-input-placeholder {
-                    color: rgba(0, 0, 0, 0.22);
+                & when (@platform = phone) {
+                    border-color: Highlight;
+                    color: @win_dark_text_high;
                 }
             }
 
-            &:-ms-input-placeholder {
-                color: rgba(0, 0, 0, 0.6);
+            &:disabled {
+                border-color: rgba(0, 0, 0, 0.15);
+
+                & when (@platform = desktop) {
+                    background-color: rgba(202, 202, 202, 0.4);
+                    color: rgba(0, 0, 0, 0.4);
+                }
+                & when (@platform = phone) {
+                    background-color: transparent;
+                    color: @win_dark_text_low;
+                }
             }
 
-            background-color: rgba(255, 255, 255, 0.8);
-            border-color: rgba(0, 0, 0, 0.27);
-            color: rgb(0, 0, 0);
+            &:disabled:-ms-input-placeholder when (@platform = desktop) {
+                color: rgba(0, 0, 0, 0.22);
+            }
+            &:disabled:-ms-input-placeholder when (@platform = phone) {
+                color: @win_dark_text_low;
+            }
+
+            & when (@platform = desktop) {
+                border-color: rgba(0, 0, 0, 0.27);
+            }
+            & when (@platform = phone) {
+                background-color: rgba(0, 0, 0, 0.2);
+            }
         }
         .mixin(@theme);
+
+        &:-ms-input-placeholder when (@platform = desktop) {
+            color: rgba(0, 0, 0, 0.6);
+        }
+        &:-ms-input-placeholder when (@platform = phone) {
+            color: rgba(0, 0, 0, 0.25)
+        }
+
+        & when (@platform = desktop) {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: rgb(0, 0, 0);
+        }
+        & when (@platform = phone) {
+            border-color: transparent;
+            color: @win_dark_text_high;
+        }
     }
 
     //
     // Radio and Checkbox
     //
-    input::-ms-check {
+    input::-ms-check when (@platform = desktop) {
         .mixin(dark) {
             border-color: transparent;
         }
@@ -130,8 +197,21 @@
         background-color: rgba(255, 255, 255, 0.8);
         color: rgb(0, 0, 0);
     }
+    input::-ms-check when (@platform = phone) {
+        .mixin(dark) {
+            border-color: rgb(255, 255, 255);
+            color: rgb(255, 255, 255);
+        }
+        .mixin(light) {
+            border-color: rgb(0, 0, 0);
+            color: rgb(0, 0, 0);
+        }
+        .mixin(@theme);
 
-    input:hover::-ms-check {
+        background-color: transparent;
+    }
+
+    input:hover::-ms-check when (@platform = desktop) {
         .mixin(dark) {
         }
         .mixin(light) {
@@ -143,32 +223,52 @@
     }
 
     input:disabled::-ms-check {
-        .mixin(dark) {
+        .mixin(dark, desktop) {
             background-color: rgba(255, 255, 255, 0.4);
             border-color: transparent;
         }
-        .mixin(light) {
+        .mixin(dark, phone) {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .mixin(light, desktop) {
             background-color: rgba(202, 202, 202, 0.4);
             border-color: rgba(0, 0, 0, 0.15);
         }
-        .mixin(@theme);
+        .mixin(light, phone) {
+            border-color: rgba(0, 0, 0, 0.15);
+            color: @win_dark_text_low;
+        }
+        .mixin(@theme, @platform);
 
-        color: rgba(0, 0, 0, 0.4);
+        & when (@platform = desktop) {
+            color: rgba(0, 0, 0, 0.4);
+        }
+        & when (@platform = phone) {
+            background-color: transparent;
+        }
     }
 
     input:enabled:hover:active::-ms-check {
-        .mixin(dark) {
+        .mixin(dark, desktop) {
             background-color: rgb(255, 255, 255);
         }
-        .mixin(light) {
+        .mixin(dark, phone) {
+            background-color: Highlight;
+        }
+        .mixin(light, desktop) {
             background-color: rgb(0, 0, 0);
             border-color: transparent;
             color: rgb(255, 255, 255);
         }
-        .mixin(@theme);
+        .mixin(light, phone) {
+            background-color: Highlight;
+            color: rgb(255, 255, 255);
+        }
+        .mixin(@theme, @platform);
     }
 
-    input:-ms-keyboard-active::-ms-check {
+    input:-ms-keyboard-active::-ms-check when (@platform = desktop) {
         .mixin(dark) {
             background-color: rgb(255, 255, 255);
         }
@@ -184,16 +284,18 @@
     //
     // Clear and reveal buttons
     //
-    input::-ms-clear, input::-ms-reveal {
-        background-color: rgb(255, 255, 255);
-        color: rgb(0, 0, 0);
-    }
-    input::-ms-clear:hover, input::-ms-reveal:hover {
-        background-color: rgb(222, 222, 222);
-    }
-    input::-ms-clear:hover:active, input::-ms-reveal:hover:active {
-        background-color: rgb(0, 0, 0);
-        color: rgb(255, 255, 255);
+    & when (@platform = desktop) {
+        input::-ms-clear, input::-ms-reveal {
+            background-color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+        }
+        input::-ms-clear:hover, input::-ms-reveal:hover {
+            background-color: rgb(222, 222, 222);
+        }
+        input::-ms-clear:hover:active, input::-ms-reveal:hover:active {
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+        }
     }
 
     //
@@ -210,7 +312,7 @@
     input[type=file] {
         .mixin(dark) {
             &::-ms-browse {
-                color: rgb(255, 255, 255);
+                color: @win_light_text_high;
                 border-color: rgb(255, 255, 255);
                 background-color: transparent;
             }
@@ -218,50 +320,72 @@
             &::-ms-value {
                 background-color: transparent;
                 border-color: rgba(255, 255, 255, 0.4);
-                color: rgba(255, 255, 255, 0.4);
+                color: @win_light_text_low;
             }
 
-            &::-ms-browse:hover:active {
+            &::-ms-browse:hover:active when (@platform = desktop) {
                 background-color: rgb(255, 255, 255);
                 color: rgb(0, 0, 0);
             }
+            &::-ms-browse:hover:active when (@platform = phone) {
+                background-color: Highlight;
+            }
 
-            &::-ms-browse:hover {
+            &::-ms-browse:hover when (@platform = desktop) {
                 background-color: rgba(255, 255, 255, 0.13);
             }
 
             &:disabled::-ms-browse {
                 border-color: rgba(255, 255, 255, 0.4);
-                color: rgba(255, 255, 255, 0.4);
+                color: @win_light_text_low;
             }
         }
         .mixin(light) {
-            &::-ms-browse {
-                color: rgb(0, 0, 0);
+            &::-ms-browse when (@platform = desktop) {
+                color: @win_dark_text_high;
                 border-color: rgba(0, 0, 0, 0.2);
                 background-color: rgba(182, 182, 182, 0.7);
             }
-
-            &::-ms-value {
-                background-color: rgba(202, 202, 202, 0.4);
-                border-color: rgba(0, 0, 0, 0.15);
-                color: rgba(0, 0, 0, 0.4);
+            &::-ms-browse when (@platform = phone) {
+                color: @win_dark_text_high;
+                border-color: rgb(0, 0, 0);
+                background-color: transparent;
             }
 
-            &::-ms-browse:hover:active {
+            &::-ms-value when (@platform = desktop) {
+                color: @win_dark_text_low;
+                border-color: rgba(0, 0, 0, 0.15);
+                background-color: rgba(202, 202, 202, 0.4);
+            }
+            &::-ms-value when (@platform = phone) {
+                color: @win_dark_text_low;
+                border-color: rgba(0, 0, 0, 0.4);
+                background-color: transparent;
+            }
+
+            &::-ms-browse:hover:active when (@platform = desktop) {
                 background-color: rgb(0, 0, 0);
                 color: rgb(255, 255, 255);
             }
+            &::-ms-browse:hover:active when (@platform = phone){
+                background-color: Highlight;
+            }
 
-            &::-ms-browse:hover {
+            &::-ms-browse:hover when (@platform = desktop) {
                 background-color: rgba(205, 205, 205, 0.82);
                 border-color: rgba(164, 164, 164, 0.45);
             }
 
             &:disabled::-ms-browse {
-                background-color: rgba(202, 202, 202, 0.4);
+                color: @win_dark_text_low;
                 border-color: rgba(0, 0, 0, 0.15);
-                color: rgba(0, 0, 0, 0.4);
+
+                & when (@platform = desktop) {
+                    background-color: rgba(202, 202, 202, 0.4);
+                }
+                & when (@platform = phone) {
+                    background-color: transparent;
+                }
             }
         }
         .mixin(@theme);
@@ -271,93 +395,134 @@
         color: transparent;
     }
 
-    button, input[type=button], input[type=reset] {
-        .mixin(dark) {
-            &:enabled:hover:active {
-                background-color: rgb(255, 255, 255);
-                color: rgb(0, 0, 0);
-            }
+    // Buttons are styled pretty differently between desktop and phone, so it seems
+    // easier to just have completely separate rules for each platform
+    & when (@platform = desktop) {
+        button, input[type=button], input[type=reset] {
+            .mixin(dark) {
+                &:enabled:hover:active {
+                    background-color: rgb(255, 255, 255);
+                    color: rgb(0, 0, 0);
+                }
 
-            &:enabled:hover {
-                background-color: rgba(255, 255, 255, 0.13);
-            }
+                &:enabled:hover {
+                    background-color: rgba(255, 255, 255, 0.13);
+                }
 
-            &:disabled {
-                border-color: rgba(255, 255, 255, 0.4);
-                color: rgba(255, 255, 255, 0.4);
-            }
+                &:disabled {
+                    border-color: rgba(255, 255, 255, 0.4);
+                    color: rgba(255, 255, 255, 0.4);
+                }
 
-            color: rgb(255, 255, 255);
-            background-color: transparent;
-            border-color: rgb(255, 255, 255);
-        }
-        .mixin(light) {
-            &:enabled:hover:active {
-                background-color: rgb(0, 0, 0);
-                border-color: rgb(0, 0, 0);
                 color: rgb(255, 255, 255);
-            }
-
-            &:enabled:hover {
-                background-color: rgba(205, 205, 205, 0.82);
-                border-color: rgba(164, 164, 164, 0.45);
-            }
-
-            &:disabled {
-                background-color: rgba(202, 202, 202, 0.4);
-                border-color: rgba(0, 0, 0, 0.08);
-                color: rgba(0, 0, 0, 0.4);
-            }
-
-            color: rgb(0, 0, 0);
-            border-color: rgba(0, 0, 0, 0.2);
-            background-color: rgba(182, 182, 182, 0.7);
-        }
-        .mixin(@theme);
-    }
-
-    button[type=submit], input[type=submit] {
-        .mixin(dark) {
-            &:enabled:hover:active {
-                background-color: rgb(255, 255, 255);
-                border-color: transparent;
-                color: rgb(0, 0, 0);
-            }
-
-            &:hover {
-                background-color: rgb(95, 55, 190);
+                background-color: transparent;
                 border-color: rgb(255, 255, 255);
             }
+            .mixin(light) {
+                &:enabled:hover:active {
+                    background-color: rgb(0, 0, 0);
+                    border-color: rgb(0, 0, 0);
+                    color: rgb(255, 255, 255);
+                }
 
-            &:disabled {
+                &:enabled:hover {
+                    background-color: rgba(205, 205, 205, 0.82);
+                    border-color: rgba(164, 164, 164, 0.45);
+                }
+
+                &:disabled {
+                    background-color: rgba(202, 202, 202, 0.4);
+                    border-color: rgba(0, 0, 0, 0.08);
+                    color: rgba(0, 0, 0, 0.4);
+                }
+
+                color: rgb(0, 0, 0);
+                border-color: rgba(0, 0, 0, 0.2);
+                background-color: rgba(182, 182, 182, 0.7);
+            }
+            .mixin(@theme);
+        }
+
+        button[type=submit], input[type=submit] {
+            .mixin(dark) {
+                &:enabled:hover:active {
+                    background-color: rgb(255, 255, 255);
+                    border-color: transparent;
+                    color: rgb(0, 0, 0);
+                }
+
+                &:hover {
+                    background-color: rgb(95, 55, 190);
+                    border-color: rgb(255, 255, 255);
+                }
+
+                &:disabled {
+                    background-color: transparent;
+                    border-color: rgba(255, 255, 255, 0.4);
+                    color: rgba(255, 255, 255, 0.4);
+                }
+            }
+            .mixin(light) {
+                &:enabled:hover:active {
+                    background-color: rgb(0, 0, 0);
+                    border-color: transparent;
+                    color: rgb(255, 255, 255);
+                }
+
+                &:hover {
+                    background-color: rgb(95, 55, 190);
+                    border-color: transparent;
+                }
+
+                &:disabled {
+                    background-color: rgba(202, 202, 202, 0.4);
+                    border-color: rgba(0, 0, 0, 0.08);
+                    color: rgba(0, 0, 0, 0.4);
+                }
+            }
+            .mixin(@theme);
+
+            background-color: rgb(70, 23, 180);
+            border-color: transparent;
+            color: rgb(255, 255, 255);
+        }
+    }
+
+    // Phone button style
+    & when (@platform = phone) {
+        button, input[type=button], input[type=reset],
+        button[type=submit], input[type=submit] {
+            .mixin(dark) {
+                &:enabled:hover:active {
+                    background-color: Highlight;
+                }
+
+                &:disabled {
+                    border-color: rgba(255, 255, 255, 0.4);
+                    color: @win_light_text_low;
+                }
+
+                color: @win_light_text_high;
+                border-color: rgb(255, 255, 255);
+            }
+            .mixin(light) {
+                &:enabled:hover:active {
+                    background-color: Highlight;
+                }
+
+                &:disabled {
+                    border-color: rgba(0, 0, 0, 0.4);
+                    color: @win_dark_text_low;
+                }
+
+                color: @win_dark_text_high;
+                border-color: rgb(0, 0, 0);
                 background-color: transparent;
-                border-color: rgba(255, 255, 255, 0.4);
-                color: rgba(255, 255, 255, 0.4);
             }
+            .mixin(@theme);
+
+            background-color: transparent;
         }
-        .mixin(light) {
-            &:enabled:hover:active {
-                background-color: rgb(0, 0, 0);
-                border-color: transparent;
-                color: rgb(255, 255, 255);
-            }
-
-            &:hover {
-                background-color: rgb(95, 55, 190);
-                border-color: transparent;
-            }
-
-            &:disabled {
-                background-color: rgba(202, 202, 202, 0.4);
-                border-color: rgba(0, 0, 0, 0.08);
-                color: rgba(0, 0, 0, 0.4);
-            }
-        }
-        .mixin(@theme);
-
-        background-color: rgb(70, 23, 180);
-        border-color: transparent;
-        color: rgb(255, 255, 255);
     }
 
     // Keyboard active has to be handled separately
@@ -378,10 +543,12 @@
         border-color: transparent;
     }
 
+
     //
     // Dropdown
+    // Also quite different between desktop and phone.
     //
-    select {
+    select when (@platform = desktop) {
         .mixin(dark) {
             &:hover {
                 background-color: rgba(255, 255, 255, 0.87);
@@ -452,7 +619,60 @@
         color: rgb(0, 0, 0);
     }
 
-    option {
+    select when (@platform = phone) {
+        .mixin(dark) {
+            &:disabled {
+                background-color: transparent;
+                border-color: rgba(255, 255, 255, 0.4);
+                color: @win_light_text_low;
+
+                option:checked {
+                    background-color: rgba(255, 255, 255, 0.4);
+                    color: rgba(0, 0, 0, 0.3);
+                }
+            }
+
+            &::-ms-expand {
+                background-color: transparent;
+            }
+
+            border-color: rgb(255, 255, 255);
+            color: @win_light_text_high;
+        }
+        .mixin(light) {
+            &:disabled {
+                background-color: transparent;
+                border-color: rgba(0, 0, 0, 0.15);
+                color: @win_dark_text_low;
+
+                option:checked {
+                    background-color: rgba(0, 0, 0, 0.55);
+                    color: rgba(0, 0, 0, 0.3);
+                }
+            }
+
+            &::-ms-expand {
+                background-color: transparent;
+            }
+
+            border-color: rgb(0, 0, 0);
+            color: @win_dark_text_high;
+        }
+        .mixin(@theme);
+
+        &:enabled:focus {
+            background-color: rgb(255, 255, 255);
+            border-color: Highlight;
+            color: @win_dark_text_high;
+        }
+
+        background-color: transparent;
+    }
+
+    //
+    // Select option
+    //
+    option when (@platform = desktop) {
         &:hover {
             background-color: rgb(197, 197, 197);
         }
@@ -464,6 +684,27 @@
         &:checked {
             color: rgb(255, 255, 255);
             background-color: rgb(70, 23, 180);
+        }
+    }
+    option when (@platform = phone) {
+        &:hover:active {
+            background-color: rgb(255, 255, 255);
+        }
+
+        &:checked {
+            color: Highlight;
+            background-color: transparent;
+        }
+
+        &:checked:disabled {
+            .mixin(dark) {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+            .mixin(light) {
+                background-color: rgba(0, 0, 0, 0.55);
+            }
+            .mixin(@theme);
+            color: @win_dark_text_low;
         }
     }
 
@@ -484,7 +725,7 @@
     //
     // Progress
     //
-    progress {
+    progress when (@platform = desktop) {
         .mixin(dark) {
             &:indeterminate {
                 background-color: transparent;
@@ -513,13 +754,33 @@
         }
         .mixin(@theme);
     }
+    progress when (@platform = phone) {
+        .mixin(dark) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .mixin(light) {
+            background-color: rgba(0, 0, 0, 0.095);
+        }
+        .mixin(@theme);
+
+        &:indeterminate {
+            background-color: transparent;
+            color: Highlight;
+        }
+
+        &:-ms-fill {
+            background-color: currentColor;
+        }
+
+        color: Highlight;
+    }
 
     //
     // Slider
     //
     input[type=range] {
         .mixin(dark) {
-            &::-ms-fill-lower {
+            &::-ms-fill-lower when (@platform = desktop) {
                 background-color: rgb(91, 46, 197);
             }
 
@@ -535,11 +796,11 @@
                 color: rgba(255, 255, 255, 0.5);
             }
 
-            &:enabled:hover::-ms-fill-lower {
+            &:enabled:hover::-ms-fill-lower when (@platform = desktop) {
                 background-color: rgb(114, 75, 205);
             }
 
-            &:enabled:hover::-ms-fill-upper {
+            &:enabled:hover::-ms-fill-upper when (@platform = desktop) {
                 background-color: rgba(255, 255, 255, 0.18);
             }
 
@@ -556,7 +817,7 @@
             }
         }
         .mixin(light) {
-            &::-ms-fill-lower {
+            &::-ms-fill-lower when (@platform = desktop) {
                 background-color: rgb(70, 23, 180);
             }
 
@@ -572,11 +833,11 @@
                 color: rgba(0, 0, 0, 0.5);
             }
 
-            &:enabled:hover::-ms-fill-lower {
+            &:enabled:hover::-ms-fill-lower when (@platform = desktop) {
                 background-color: rgb(95, 55, 190);
             }
 
-            &:enabled:hover::-ms-fill-upper {
+            &:enabled:hover::-ms-fill-upper when (@platform = desktop) {
                 background-color: rgba(0, 0, 0, 0.15);
             }
 
@@ -594,6 +855,10 @@
         }
         .mixin(@theme);
 
+        &::-ms-fill-lower when (@platform = phone) {
+            background-color: Highlight;
+        }
+
         &::-ms-track {
             background-color: transparent;
             color: transparent;
@@ -605,7 +870,7 @@
     //
     // Link
     //
-    a {
+    a when (@platform = desktop) {
         .mixin(dark) {
             &:hover:active {
                 color: rgba(156, 114, 255, 0.6);
@@ -642,6 +907,21 @@
         }
         .mixin(@theme);
     }
+    a when (@platform = phone) {
+        .mixin(dark) {
+            &[disabled], &[disabled]:active {
+                color: rgba(255, 255, 255, 0.4);
+            }
+        }
+        .mixin(light) {
+            &[disabled], &[disabled]:active {
+                color: rgba(0, 0, 0, 0.4);
+            }
+        }
+        .mixin(@theme);
+
+        color: Highlight;
+    }
 
     // The "-ms-keyboard-active" pseudo is not always supported. When it is not supported
     // it will be treated as a CSS parse error and will throw out all rules in the current
@@ -656,7 +936,7 @@
                 color: rgba(255, 255, 255, 0.4);
             }
 
-            &:hover {
+            &:hover when (@platform = desktop) {
                 color: rgba(255, 255, 255, 0.8);
             }
         }
@@ -669,7 +949,7 @@
                 color: rgba(0, 0, 0, 0.4);
             }
 
-            &:hover {
+            &:hover when (@platform = phone) {
                 color: rgba(0, 0, 0, 0.8);
             }
         }
@@ -677,240 +957,462 @@
     }
 }
 
+//
+// High contrast styles
+//
 @media (-ms-high-contrast) {
-    .win-type-interactive {
-        color: WindowText;
-    }
-    .win-type-interactive:hover, .win-type-interactive:hover:active {
-        color: -ms-hotlight;
-    }
-    .win-type-interactive:-ms-keyboard-active {
-        color: -ms-hotlight;
+    // Desktop colors
+    & when (@platform = desktop) {
+        .win-type-interactive {
+            color: WindowText;
+        }
+        .win-type-interactive:hover, .win-type-interactive:hover:active {
+            color: -ms-hotlight;
+        }
+        .win-type-interactive:-ms-keyboard-active {
+            color: -ms-hotlight;
+        }
+
+        /*
+        Text selection high contrast color.
+        */
+        ::selection, select:focus::-ms-value {
+            background-color: Highlight;
+            color: HighlightText;
+        }
+
+        /*
+        Button
+        */
+        button, input[type=button], input[type=reset],
+        input[type=file]::-ms-browse {
+            background-color: ButtonFace;
+            border-color: ButtonText;
+            color: ButtonText;
+        }
+
+        button[type=submit], input[type=submit] {
+            background-color: Highlight;
+            border-color: ButtonText;
+            color: HighlightText;
+        }
+
+        button:hover:active, button[type=submit]:hover:active, input[type=button]:hover:active,
+        input[type=submit]:hover:active, input[type=reset]:hover:active,
+        input[type=file]::-ms-browse:hover:active {
+            background-clip: border-box;
+            background-color: ButtonText;
+            border-color: transparent;
+            color: ButtonFace;
+        }
+        button:disabled, button[type=submit]:disabled, input[type=button]:disabled,
+        input[type=submit]:disabled, input[type=reset]:disabled,
+        input[type=file]:disabled::-ms-browse, button:disabled:active, button[type=submit]:disabled:active,
+        input[type=button]:disabled:active, input[type=submit]:disabled:active,
+        input[type=reset]:disabled:active, input[type=file]:disabled::-ms-browse:active {
+            background-color: ButtonFace;
+            border-color: GrayText;
+            color: GrayText;
+        }
+
+        button:-ms-keyboard-active, button[type=submit]:-ms-keyboard-active, input[type=button]:-ms-keyboard-active,
+        input[type=submit]:-ms-keyboard-active, input[type=reset]:-ms-keyboard-active {
+            background-clip: border-box;
+            background-color: ButtonText;
+            border-color: transparent;
+            color: ButtonFace;
+        }
+
+        button:hover, input[type=button]:hover, input[type=reset]:hover,
+        input::-ms-clear:hover, input::-ms-reveal:hover,
+        input[type=file]::-ms-browse:hover {
+            background-color: Highlight;
+            border-color: ButtonText;
+            color: HighlightText;
+        }
+
+        input::-ms-clear:hover:active, input::-ms-reveal:hover:active {
+            background-clip: border-box;
+            background-color: ButtonText;
+            border-color: transparent;
+            color: ButtonFace;
+        }
+        input:disabled::-ms-clear, input:disabled::-ms-reveal, select:disabled::-ms-expand {
+            background-color: ButtonFace;
+            border-color: GrayText;
+            color: GrayText;
+        }
+
+        input::-ms-clear, input::-ms-reveal, select::-ms-expand {
+            background-color: ButtonFace;
+            border-color: ButtonText;
+            color: ButtonText;
+        }
+
+        /*
+        Select
+        */
+        select:active:not(:disabled)::-ms-expand {
+            color: ButtonFace;
+            background-color: ButtonText;
+        }
+        option:checked, select:focus::-ms-value {
+            color: HighlightText;
+            background-color: Highlight;
+        }
+        select:active:not(:disabled)::-ms-value,
+        option:hover:active, option:checked:hover:active {
+            color: ButtonFace;
+            background-color: ButtonText;
+        }
+        option:checked:disabled, option:checked:disabled:active,
+        optgroup:disabled option:checked, optgroup:disabled option:checked:active,
+        select:disabled option:checked, select:disabled option:checked:active,
+        select:disabled:focus::-ms-value {
+            color: ButtonFace;
+            background-color: GrayText;
+        }
+
+        /*
+        Link high contrast colors.
+        */
+        a {
+            color: -ms-hotlight;
+        }
+        a[disabled] {
+            color: GrayText;
+        }
+
+        /*
+        Text input, checkbox, radio, and select high contrast colors.
+        */
+        input:hover::-ms-check { /* only checkbox and radio have hover state */
+            background-color: Highlight;
+            color: HighlightText;
+        }
+
+        input[type=text], input[type=password],
+        input[type=email], input[type=number],
+        input[type=tel], input[type=url],
+        input[type=search], textarea, .win-textarea, select,
+        input::-ms-check {
+            background-color: ButtonFace;
+            border-color: ButtonText;
+            color: ButtonText;
+        }
+        input:hover:active::-ms-check { /* only checkbox and radio have active state */
+            background-clip: border-box;
+            background-color: ButtonText;
+            border-color: transparent;
+            color: ButtonFace;
+        }
+        input[type=text]:disabled, input[type=password]:disabled,
+        input[type=email]:disabled, input[type=number]:disabled,
+        input[type=tel]:disabled, input[type=url]:disabled,
+        input[type=search]:disabled, input[type=file]::-ms-value,
+        textarea:disabled, .win-textarea:disabled, select:disabled,
+        input:disabled::-ms-check, input:disabled:active::-ms-check {
+            border-color: GrayText;
+            color: ButtonText;
+            background-color: ButtonFace;
+        }
+        input:disabled::-ms-check, input:disabled:active::-ms-check,
+        input[type]:-ms-input-placeholder, textarea:-ms-input-placeholder,
+        select:disabled::-ms-value {
+            color: GrayText;
+        }
+        input:-ms-keyboard-active::-ms-check { /* only checkbox and radio have active state */
+            background-clip: border-box;
+            background-color: ButtonText;
+            border-color: transparent;
+            color: ButtonFace;
+        }
+
+        /*
+        Progress high contrast colors.
+        */
+        progress {
+            border: 1px solid ButtonText;
+            background-color: ButtonFace;
+            color: Highlight;
+        }
+        progress:indeterminate {
+            border: transparent;
+        }
+        progress::-ms-fill {
+            border-right: 1px solid ButtonText;
+            background-color: Highlight;
+        }
+        progress.win-paused:not(:indeterminate)::-ms-fill {
+            background-color: GrayText;
+        }
+        progress.win-paused:not(:indeterminate) {
+            opacity: 1.0;
+        }
+
+        /*
+        Slider
+        */
+        input[type=range]::-ms-track {
+            border: 1px solid ButtonText;
+            background-color: ButtonFace;
+            color: transparent;
+        }
+        input[type=range]:disabled::-ms-track {
+            border-color: GrayText;
+        }
+        input[type=range]::-ms-fill-lower {
+            background-color: Highlight;
+        }
+        input[type=range]:disabled::-ms-fill-lower {
+            background-color: transparent;
+        }
+        input[type=range]::-ms-ticks-before,
+        input[type=range]::-ms-ticks-after {
+            color: ButtonText;
+        }
+        input[type=range]:disabled::-ms-ticks-before,
+        input[type=range]:disabled::-ms-ticks-after {
+            color: GrayText;
+        }
+        input[type=range]::-ms-thumb {
+            background-color: ButtonText;
+            border-left: 1px solid HighlightText;
+            border-right: 1px solid HighlightText;
+        }
+        input[type=range].win-vertical::-ms-thumb {
+            border-left-style: none;
+            border-right-style: none;
+            border-top: 1px solid HighlightText;
+            border-bottom: 1px solid HighlightText;
+        }
+        input[type=range]:active::-ms-thumb {
+            background-color: HighlightText;
+            border-color: ButtonText;
+        }
+        input[type=range]:disabled::-ms-thumb,
+        input[type=range]:disabled:active::-ms-thumb {
+            background-color: GrayText;
+            border-color: GrayText;
+        }
+        input[type=range]:hover::-ms-thumb {
+            background-color: Highlight;
+        }
     }
 
-    /*
-    Text selection high contrast color.
-    */
-    ::selection, select:focus::-ms-value {
-        background-color: Highlight;
-        color: HighlightText;
-    }
+    & when (@platform = phone) {
+        //
+        // Text selection color
+        //
+        ::selection {
+            .mixin(dark) {
+                background-color: rgb(255, 255, 255);
+                color: rgb(0, 0, 0);
+            }
+            .mixin(light) {
+                background-color: rgb(0, 0, 0);
+                color: rgb(255, 255, 255);
+            }
+            .mixin(@theme);
+        }
 
-    /*
-    Button
-    */
-    button, input[type=button], input[type=reset],
-    input[type=file]::-ms-browse {
-        background-color: ButtonFace;
-        border-color: ButtonText;
-        color: ButtonText;
-    }
+        //
+        // Radio and check button
+        //
+        input::-ms-check:hover:active, input::-ms-check:active {
+            .mixin(dark) {
+                background-color: rgb(255, 255, 255);
+                color: rgb(0, 0, 0);
+            }
+            .mixin(light) {
+                background-color: rgb(0, 0, 0);
+                color: rgb(255, 255, 255);
+            }
+            .mixin(@theme);
+        }
 
-    button[type=submit], input[type=submit] {
-        background-color: Highlight;
-        border-color: ButtonText;
-        color: HighlightText;
-    }
+        //
+        // Button
+        //
+        button:hover:active, input[type=button]:hover:active, input[type=submit]:hover:active {
+            .mixin(dark) {
+                background-color: rgb(255, 255, 255);
+                color: rgb(0, 0, 0);
+            }
+            .mixin(light) {
+                background-color: rgb(0, 0, 0);
+                color: rgb(255, 255, 255);
+            }
+            .mixin(@theme);
+        }
 
-    button:hover:active, button[type=submit]:hover:active, input[type=button]:hover:active,
-    input[type=submit]:hover:active, input[type=reset]:hover:active,
-    input[type=file]::-ms-browse:hover:active {
-        background-clip: border-box;
-        background-color: ButtonText;
-        border-color: transparent;
-        color: ButtonFace;
-    }
-    button:disabled, button[type=submit]:disabled, input[type=button]:disabled,
-    input[type=submit]:disabled, input[type=reset]:disabled,
-    input[type=file]:disabled::-ms-browse, button:disabled:active, button[type=submit]:disabled:active,
-    input[type=button]:disabled:active, input[type=submit]:disabled:active,
-    input[type=reset]:disabled:active, input[type=file]:disabled::-ms-browse:active {
-        background-color: ButtonFace;
-        border-color: GrayText;
-        color: GrayText;
-    }
+        //
+        // Text input
+        //
+        input:not([type=button]):not([type=submit]), textarea, .win-textarea {
+            .mixin(dark) {
+                border-color: rgb(255, 255, 255);
+                color: rgb(255, 255, 255);
+            }
+            .mixin(light) {
+                border-color: rgb(0, 0, 0);
+                color: rgb(0, 0, 0);
+            }
+            .mixin(@theme);
+            background-color: transparent;
+        }
 
-    button:-ms-keyboard-active, button[type=submit]:-ms-keyboard-active, input[type=button]:-ms-keyboard-active,
-    input[type=submit]:-ms-keyboard-active, input[type=reset]:-ms-keyboard-active {
-        background-clip: border-box;
-        background-color: ButtonText;
-        border-color: transparent;
-        color: ButtonFace;
-    }
+        input:not([type=button]):not([type=submit]):focus, textarea:focus, .win-textarea:focus {
+            .mixin(dark) {
+                border-color: rgb(255, 255, 255);
+                color: rgb(255, 255, 255);
+            }
+            .mixin(light) {
+                border-color: rgb(0, 0, 0);
+                color: rgb(0, 0, 0);
+            }
+            .mixin(@theme);
+            background-color: transparent;
+        }
 
-    button:hover, input[type=button]:hover, input[type=reset]:hover,
-    input::-ms-clear:hover, input::-ms-reveal:hover,
-    input[type=file]::-ms-browse:hover {
-        background-color: Highlight;
-        border-color: ButtonText;
-        color: HighlightText;
-    }
+        input:not([type=button]):not([type=submit]):disabled, textarea:disabled, .win-textarea:disabled {
+            .mixin(dark) {
+                border-color: @win_light_text_low;
+                color: @win_light_text_low;
+            }
+            .mixin(light) {
+                border-color: @win_dark_text_low;
+                color: @win_dark_text_low;
+            }
+            .mixin(@theme);
+        }
 
-    input::-ms-clear:hover:active, input::-ms-reveal:hover:active {
-        background-clip: border-box;
-        background-color: ButtonText;
-        border-color: transparent;
-        color: ButtonFace;
-    }
-    input:disabled::-ms-clear, input:disabled::-ms-reveal, select:disabled::-ms-expand {
-        background-color: ButtonFace;
-        border-color: GrayText;
-        color: GrayText;
-    }
+        //
+        // Progress bar
+        //
+        progress {
+            .mixin(dark) {
+                color: rgb(255, 255, 255);
+                border-color: rgb(255, 255, 255);
+            }
+            .mixin(light) {
+                color: rgba(0, 0, 0, 0.87);
+                border-color: rgb(0, 0, 0);
+            }
+            .mixin(@theme);
+            border-width: 0px 1px 1px 1px;
+            border-style: solid;
+            background-color: transparent;
+        }
 
-    input::-ms-clear, input::-ms-reveal, select::-ms-expand {
-        background-color: ButtonFace;
-        border-color: ButtonText;
-        color: ButtonText;
-    }
+        progress:indeterminate {
+            .mixin(dark) {
+                color: rgb(255, 255, 255);
+            }
+            .mixin(light) {
+                color: rgba(0, 0, 0, 0.87);
+            }
+            .mixin(@theme);
+            border-style: none;
+        }
 
-    /*
-    Select
-    */
-    select:active:not(:disabled)::-ms-expand {
-        color: ButtonFace;
-        background-color: ButtonText;
-    }
-    option:checked, select:focus::-ms-value {
-        color: HighlightText;
-        background-color: Highlight;
-    }
-    select:active:not(:disabled)::-ms-value,
-    option:hover:active, option:checked:hover:active {
-        color: ButtonFace;
-        background-color: ButtonText;
-    }
-    option:checked:disabled, option:checked:disabled:active,
-    optgroup:disabled option:checked, optgroup:disabled option:checked:active,
-    select:disabled option:checked, select:disabled option:checked:active,
-    select:disabled:focus::-ms-value {
-        color: ButtonFace;
-        background-color: GrayText;
-    }
+        //
+        // Slider
+        //
+        input[type=range]::-ms-track, input[type=range]:active::-ms-track {
+            .mixin(dark) {
+                background-color: transparent;
+                border-color: rgb(255, 255, 255);
+                border-style: solid;
+            }
+            .mixin(light) {
+                background-color: transparent;
+                border-color: rgb(0, 0, 0);
+                border-style: solid;
+            }
+            .mixin(@theme);
+        }
 
-    /*
-    Link high contrast colors.
-    */
-    a {
-        color: -ms-hotlight;
-    }
-    a[disabled] {
-        color: GrayText;
-    }
+        input[type=range]:disabled::-ms-track, input[type=range]:disabled::-ms-track {
+            .mixin(dark) {
+                border-color: rgba(255, 255, 255, 0.4);
+            }
+            .mixin(light) {
+                border-color: rgba(0, 0, 0, 0.3);
+            }
+            .mixin(@theme);
+        }
 
-    /*
-    Text input, checkbox, radio, and select high contrast colors.
-    */
-    input:hover::-ms-check { /* only checkbox and radio have hover state */
-        background-color: Highlight;
-        color: HighlightText;
-    }
+        input[type=range]::-ms-fill-lower, input[type=range]:active::-ms-fill-lower {
+            .mixin(dark) {
+                background-color: rgb(255, 255, 255);
+            }
+            .mixin(light) {
+                background-color: rgb(0, 0, 0);
+            }
+            .mixin(@theme);
+        }
 
-    input[type=text], input[type=password],
-    input[type=email], input[type=number],
-    input[type=tel], input[type=url],
-    input[type=search], textarea, .win-textarea, select,
-    input::-ms-check {
-        background-color: ButtonFace;
-        border-color: ButtonText;
-        color: ButtonText;
-    }
-    input:hover:active::-ms-check { /* only checkbox and radio have active state */
-        background-clip: border-box;
-        background-color: ButtonText;
-        border-color: transparent;
-        color: ButtonFace;
-    }
-    input[type=text]:disabled, input[type=password]:disabled,
-    input[type=email]:disabled, input[type=number]:disabled,
-    input[type=tel]:disabled, input[type=url]:disabled,
-    input[type=search]:disabled, input[type=file]::-ms-value,
-    textarea:disabled, .win-textarea:disabled, select:disabled,
-    input:disabled::-ms-check, input:disabled:active::-ms-check {
-        border-color: GrayText;
-        color: ButtonText;
-        background-color: ButtonFace;
-    }
-    input:disabled::-ms-check, input:disabled:active::-ms-check,
-    input[type]:-ms-input-placeholder, textarea:-ms-input-placeholder,
-    select:disabled::-ms-value {
-        color: GrayText;
-    }
-    input:-ms-keyboard-active::-ms-check { /* only checkbox and radio have active state */
-        background-clip: border-box;
-        background-color: ButtonText;
-        border-color: transparent;
-        color: ButtonFace;
-    }
+        input[type=range]:disabled::-ms-fill-lower, input[type=range]:disabled::-ms-fill-lower {
+            .mixin(dark) {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+            .mixin(light) {
+                background-color: rgba(0, 0, 0, 0.3);
+            }
+            .mixin(@theme);
+        }
 
-    /*
-    Progress high contrast colors.
-    */
-    progress {
-        border: 1px solid ButtonText;
-        background-color: ButtonFace;
-        color: Highlight;
-    }
-    progress:indeterminate {
-        border: transparent;
-    }
-    progress::-ms-fill {
-        border-right: 1px solid ButtonText;
-        background-color: Highlight;
-    }
-    progress.win-paused:not(:indeterminate)::-ms-fill {
-        background-color: GrayText;
-    }
-    progress.win-paused:not(:indeterminate) {
-        opacity: 1.0;
-    }
+        input[type=range]::-ms-thumb {
+            .mixin(dark) {
+                background-color: rgb(0, 0, 0);
+                border-width: 1px;
+                border-color: rgb(255, 255, 255);
+                border-style: solid;
+            }
+            .mixin(light) {
+                background-color: rgb(255, 255, 255);
+                border-width: 1px;
+                border-color: rgb(0, 0, 0);
+                border-style: solid;
+            }
+            .mixin(@theme);
+        }
 
-    /*
-    Slider
-    */
-    input[type=range]::-ms-track {
-        border: 1px solid ButtonText;
-        background-color: ButtonFace;
-        color: transparent;
-    }
-    input[type=range]:disabled::-ms-track {
-        border-color: GrayText;
-    }
-    input[type=range]::-ms-fill-lower {
-        background-color: Highlight;
-    }
-    input[type=range]:disabled::-ms-fill-lower {
-        background-color: transparent;
-    }
-    input[type=range]::-ms-ticks-before,
-    input[type=range]::-ms-ticks-after {
-        color: ButtonText;
-    }
-    input[type=range]:disabled::-ms-ticks-before,
-    input[type=range]:disabled::-ms-ticks-after {
-        color: GrayText;
-    }
-    input[type=range]::-ms-thumb {
-        background-color: ButtonText;
-        border-left: 1px solid HighlightText;
-        border-right: 1px solid HighlightText;
-    }
-    input[type=range].win-vertical::-ms-thumb {
-        border-left-style: none;
-        border-right-style: none;
-        border-top: 1px solid HighlightText;
-        border-bottom: 1px solid HighlightText;
-    }
-    input[type=range]:active::-ms-thumb {
-        background-color: HighlightText;
-        border-color: ButtonText;
-    }
-    input[type=range]:disabled::-ms-thumb,
-    input[type=range]:disabled:active::-ms-thumb {
-        background-color: GrayText;
-        border-color: GrayText;
-    }
-    input[type=range]:hover::-ms-thumb {
-        background-color: Highlight;
+        input[type=range]:disabled::-ms-thumb {
+            .mixin(dark) {
+                background-color: rgb(0, 0, 0);
+                border-color: rgba(255, 255, 255, 0.4);
+            }
+            .mixin(light) {
+                background-color: rgb(255, 255, 255);
+                border-color: rgba(0, 0, 0, 0.3);
+            }
+            .mixin(@theme);
+        }
+
+        input[type=range]::-ms-fill-upper, input[type=range]:active::-ms-fill-upper,
+        input[type=range]:disabled::-ms-fill-upper {
+            background-color: transparent;
+        }
+
+        input[type=range] {
+            background-color: transparent;
+        }
+
+        //
+        // Link
+        //
+        a, a:hover, a:hover:active, a:visited {
+            .mixin(dark) {
+                color: rgb(255, 255, 255);
+                text-decoration: underline;
+            }
+            .mixin(light) {
+                color: rgb(0, 0, 0);
+                text-decoration: underline;
+            }
+            .mixin(@theme);
+        }
     }
 }
