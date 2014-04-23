@@ -31,11 +31,13 @@ iframe {
     border: 0;
 }
 
-body,
-button, input,
-textarea, .win-textarea,
-select, option {
-    letter-spacing: 0.02em;
+& when (@platform = desktop) {
+    body,
+    button, input,
+    textarea, .win-textarea,
+    select, option {
+        letter-spacing: 0.02em;
+    }
 }
 
 //
@@ -45,27 +47,91 @@ input[type=text], input[type=password], input[type=email], input[type=number],
 input[type=tel], input[type=url], input[type=search] {
     -ms-user-select: element;
     border-style: solid;
-    border-width: 2px;
-    margin: 4px 0px;
-    width: 276px;
-    min-width: 64px;
-    min-height: 28px;
-    background-clip: border-box;
-    padding: 0px;
-    .win-type-medium-internal();
+
+    & when (@platform = desktop) {
+        border-width: 2px;
+        margin: 4px 0px;
+        width: 276px;
+        min-width: 64px;
+        min-height: 28px;
+        background-clip: border-box;
+        padding: 0px;
+        .win-type-medium-internal();
+    }
+
+    & when (@platform = phone) {
+        border-width: 3px;
+        margin: 12px 0px;
+        width: 100%;
+        min-height: 38px;
+        box-sizing: border-box;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 16pt;
+        font-weight: @win_font_weight_medium;
+    }
 }
 
-input::-ms-value {
+// Text inside of input
+input::-ms-value when (@platform = desktop) {
     margin-right: 8px;
     margin-top: 4px;
     margin-bottom: 0px;
     margin-left: 8px;
 }
 
+input::-ms-value when (@platform = phone) {
+    margin-right: 8px;
+    margin-top: -11px;
+    margin-bottom: -5px;
+    margin-left: 4px;
+}
+
+//
+// Text area
+//
+textarea, .win-textarea {
+    -ms-user-select: element;
+    border-style: solid;
+    padding-top: 4px;
+    padding-left: 8px;
+    padding-right: 17px;
+    background-clip: border-box;
+    overflow-y: scroll;
+    word-wrap: break-word;
+
+    & when (@platform = desktop) {
+        border-width: 2px;
+        margin: 4px 0px;
+        padding-bottom: 4px;
+        min-width: 64px;
+        min-height: 39px;
+        .win-type-medium-internal();
+    }
+
+    & when (@platform = phone) {
+        border-width: 3px;
+        margin: 12px 0px;
+        padding-bottom: 10px;
+        width: 100%;
+        min-width: 100%;
+        min-height: 53px;
+        box-sizing: border-box;
+        font-size: 16pt;
+        font-weight: @win_font_weight_medium;
+    }
+
+    &:-ms-lang(@{rtl}) {
+        // Flip sides for autohiding scrollbar padding on RTL layouts
+        padding-right: 8px;
+        padding-left: 17px;
+    }
+}
+
 //
 // Radio and check
 //
-input[type=radio] {
+input[type=radio] when (@platform = desktop) {
     width: 23px;
     height: 23px;
     margin-left: -1px;
@@ -77,7 +143,12 @@ input[type=radio] {
         margin-right: -1px;
     }
 }
-input[type=checkbox] {
+input[type=radio] when (@platform = phone) {
+    width: 26px;
+    height: 26px;
+    margin: 20px 0px;
+}
+input[type=checkbox] when (@platform = desktop) {
     width: 21px;
     height: 21px;
     margin-right: 5px;
@@ -87,61 +158,72 @@ input[type=checkbox] {
         margin-right: 0px;
     }
 }
+input[type=checkbox] when (@platform = phone) {
+    width: 26px;
+    height: 26px;
+    margin: 20px 0px;
+}
 input::-ms-check {
     border-style: solid;
     display: inline-block;
-    border-width: 2px;
     background-clip: border-box;
-}
 
-//
-// Text area
-//
-textarea, .win-textarea {
-    -ms-user-select: element;
-    border-style: solid;
-    border-width: 2px;
-    margin: 4px 0px;
-    padding: 4px 8px;
-    padding-right: 17px;
-    min-width: 64px;
-    min-height: 39px;
-    background-clip: border-box;
-    overflow-y: scroll;
-    word-wrap: break-word;
-    .win-type-medium-internal();
-
-    &:-ms-lang(@{rtl}) {
-        // Flip sides for autohiding scrollbar padding on RTL layouts
-        padding-right: 8px;
-        padding-left: 17px;
+    & when (@platform = desktop) {
+        border-width: 2px;
+    }
+    & when (@platform = phone) {
+        border-width: 2.25px;
     }
 }
 
 //
 // Button
 //
-button, input[type=button], input[type=reset], input[type=submit], button[type=submit] {
+html button, input[type=button], input[type=reset], input[type=submit], button[type=submit] {
     border-style: solid;
     background-clip: padding-box;
-    min-height: 32px;
-    min-width: 90px;
-    padding: 4px 8px;
-    border-width: 2px;
-    .win-type-large-internal();
+
+    & when (@platform = desktop) {
+        min-height: 32px;
+        min-width: 90px;
+        padding: 4px 8px;
+        border-width: 2px;
+        .win-type-large-internal();
+    }
+
+    & when (@platform = phone) {
+        min-height: 39px;
+        min-width: 108px;
+        max-width: 100%;
+        padding: 0px 6px;
+        margin: 12px 0px;
+        border-width: 2.25px;
+        font-size: 14pt;
+        font-weight: 600;
+        font-family: "Segoe WP";
+    }
 }
 
 input[type=submit], button[type=submit] {
     background-clip: border-box;
 }
 
-input::-ms-clear, input::-ms-reveal {
-    margin-left: 2px;
+// Clear and reveal buttons
+& when (@platform = desktop) {
+    input::-ms-clear, input::-ms-reveal {
+        margin-left: 2px;
+    }
+
+    input:-ms-lang(@{rtl})::-ms-clear,
+    input:-ms-lang(@{rtl})::-ms-reveal {
+        margin-left: 0;
+        margin-right: 2px;
+    }
 }
-input:-ms-lang(@{rtl})::-ms-clear,
-input:-ms-lang(@{rtl})::-ms-reveal {
-    margin-left: 0;
-    margin-right: 2px;
+& when (@platform = phone) {
+    input::-ms-clear, input::-ms-reveal {
+        display: none;
+    }
 }
 
 //
@@ -186,23 +268,50 @@ input[type=file] {
 // Dropdown
 //
 select {
-    min-width: 80px;
-    min-height: 32px;
-    border-width: 2px;
-    border-style: solid;
     background-clip: border-box;
-    margin: 4px 0px;
-    .win-type-medium-internal();
+    border-style: solid;
 
-    &::-ms-value {
-        padding: 4px 8px;
-        margin: 0px;
+    & when (@platform = desktop) {
+        min-width: 80px;
+        min-height: 32px;
+        border-width: 2px;
+        margin: 4px 0px;
+        .win-type-medium-internal();
     }
 
+    & when (@platform = phone) {
+        width: 100%;
+        min-height: 38px;
+        border-width: 2.25px;
+        box-sizing: border-box;
+        margin: 12px 0px;
+        padding-top: 3px;
+        padding-bottom: 4px;
+        font-size: 15pt;
+        font-weight: @win_font_weight_medium;
+    }
+
+    // Text in select box
+    &::-ms-value {
+        margin: 0px;
+
+        & when (@platform = desktop) {
+            padding: 4px 8px;
+        }
+        & when (@platform = phone) {
+            padding: 0px 8px;
+        }
+    }
+
+    // Chevron expand button
     &::-ms-expand {
         border: 0px;
         padding-left: 6px;
         padding-right: 6px;
+
+        & when (@platform = phone) {
+            display: none;
+        }
     }
 }
 
@@ -210,12 +319,23 @@ select {
 // Progress
 //
 progress {
-    width: 180px;
-    height: 6px;
     border-style: none;
+    height: 6px;
 
-    &.win-medium {
+    & when (@platform = desktop) {
+        width: 180px;
+    }
+
+    & when (@platform = phone) {
+        width: 207px;
+    }
+
+    &.win-medium when (@platform = desktop) {
         width: 280px;
+    }
+
+    &.win-medium when (@platform = phone) {
+        width: 207px;
     }
 
     &.win-large {
@@ -275,21 +395,38 @@ progress {
 // Horizontal slider
 //
 input[type=range] {
-    width: 280px;
-    height: auto;
     padding: 17px 0px 32px 0px;
+
+    & when (@platform = desktop) {
+        width: 280px;
+        height: auto;
+    }
+
+    & when (@platform = phone) {
+        width: 100%;
+        height: 19px;
+        margin: 16px 0px;
+    }
 
     &::-ms-track {
         padding: 0px;
         width: auto;
         height: 11px;
         border-style: none;
+
+        & when (@platform = phone) {
+            height: 10px;
+        }
     }
 
     &::-ms-thumb {
         width: 11px;
         height: 11px;
         border-style: none;
+
+        & when (@platform = phone) {
+            height: 18px;
+        }
     }
 
     &::-ms-ticks-before, &::-ms-ticks-after {
@@ -321,14 +458,31 @@ input[type=range] {
 // Vertical slider
 //
 input[type=range].win-vertical {
-    width: auto;
-    height: 191px;
-    padding: 0px 17px;
     writing-mode: bt-lr;
+    padding: 0px 17px;
+
+    & when (@platform = desktop) {
+        width: auto;
+        height: 191px;
+    }
+
+    & when (@platform = phone) {
+        width: 26px;
+        height: 272px;
+
+        &::-ms-thumb {
+            width: 24px;
+            height: 12px;
+        }
+    }
 
     &::-ms-track {
         width: 11px;
         height: auto;
+
+        & when (@platform = phone) {
+            width: 12px;
+        }
     }
 
     &:disabled::-ms-fill-lower {
@@ -363,9 +517,17 @@ input[type=range].win-vertical {
 //
 // Link
 //
-a {
+a when (@platform = desktop) {
     text-decoration: none;
     cursor: default;
+}
+a when (@platform = phone) {
+    text-decoration: underline;
+
+    &:hover:active {
+        transform: scale(0.9, 0.9);
+        -webkit-transform: scale(0.9, 0.9);
+    }
 }
 
 //
