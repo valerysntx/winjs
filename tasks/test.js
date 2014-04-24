@@ -13,7 +13,7 @@
                 grunt.task.run(["default", "clean:qunit", "shell:runTests"]);
             } else {
                 if (args.saucelabs) {
-                    grunt.task.run(["release", "connect:saucelabs", "saucelabs-qunit:ie11only"]); //, "saucelabs-qunit"]
+                    grunt.task.run(["release", "connect:saucelabs", "saucelabs-qunit", "saucelabs-qunit:ie11only"]
                 } else {
                     grunt.task.run(["default", "connect:localhost"]);
                 }

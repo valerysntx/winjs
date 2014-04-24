@@ -187,6 +187,7 @@
             }
         });
         test_results.tests = tests;
+        test_results.url = document.location.href;
         window.global_test_results = test_results;
     });
 
