@@ -84,7 +84,7 @@
                 testname: "winjs qunit tests - ie11only",
                 tags: ["winjs"],
                 onTestComplete: function(details) {
-                    console.log("======================================================\n" +
+                    console.log("======================================================\n" + 
                                 "Passed: " + details.result.passed + "\n" +
                                 "Failed: " + details.result.failed + "\n" +
                                 "Total: " + details.result.total + "\n" + 
