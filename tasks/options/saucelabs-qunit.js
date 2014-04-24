@@ -56,7 +56,7 @@
             options: {
                 urls: [
                     "http://127.0.0.1:9999/bin/tests/Animations/test.html?fastanimations=false&autostart=true&testtimeout=100000",
-                    "http://127.0.0.1:9999/bin/tests/AppBarAndFlyouts/test.html?fastanimations=true&autostart=true&testtimeout=100000",
+                 /*   "http://127.0.0.1:9999/bin/tests/AppBarAndFlyouts/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/Base/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/DateTime/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/FlipView/test.html?fastanimations=true&autostart=true&testtimeout=100000",
@@ -72,7 +72,7 @@
                     "http://127.0.0.1:9999/bin/tests/Toggle/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/Tooltip/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/UI/test.html?fastanimations=true&autostart=true&testtimeout=100000",
-                    "http://127.0.0.1:9999/bin/tests/ViewBox/test.html?fastanimations=true&autostart=true&testtimeout=100000",
+                    "http://127.0.0.1:9999/bin/tests/ViewBox/test.html?fastanimations=true&autostart=true&testtimeout=100000",*/
                 ],
                 build: process.env.TRAVIS_JOB_ID,
                 testInterval: 1000,
@@ -89,7 +89,8 @@
                                 "Failed: " + details.result.failed + "\n" +
                                 "Total: " + details.result.total + "\n" + 
                                 "Platform: " + JSON.stringify(details.platform) + "\n" + 
-                                "Component: " + details.result.url.split('/')[5]
+                                "Component: " + details.result.url.split('/')[5] + "\n" + 
+                                "Time: " + details.result.runtime + "ms"
                                 );
                     return true;
                 }
