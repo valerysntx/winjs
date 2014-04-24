@@ -45,7 +45,7 @@
         ie11only: {
             options: {
                 urls: [
-                    "http://127.0.0.1:9999/bin/tests/Animations/test.html?fastanimations=true&autostart=true&testtimeout=100000"
+                    "http://127.0.0.1:9999/bin/tests/Animations/test.html?fastanimations=false&autostart=true&testtimeout=100000"
                     /*,
                     "http://127.0.0.1:9999/bin/tests/AppBarAndFlyouts/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/Base/test.html?fastanimations=true&autostart=true&testtimeout=100000",
