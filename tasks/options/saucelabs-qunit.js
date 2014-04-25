@@ -22,7 +22,7 @@
         version: "34"
     }];
 
-    function findBrowserIndex(browser) {
+    function getBrowserIndex(browser) {
         var i = 1;
         browsers.forEach(function(info) {
             if (info === browser) {
@@ -30,6 +30,13 @@
             }
             i++;
         });
+    }
+
+    function getComponentResults(component) {
+        config.tests_results.results.forEach(function(componentInfo) {
+
+        });
+        return null;
     }
 
     browsers.forEach(function(browser) {
@@ -58,14 +65,26 @@
                 testname: "winjs qunit tests",
                 tags: ["winjs"],
                 onTestComplete: function(details) {
+                    var component = details.result.url.split('/')[5];
+                    var browserIndex = getBrowserIndex(details.platform);
+
                     console.log("======================================================\n" +
                                 "Passed: " + details.result.passed + "\n" +
                                 "Failed: " + details.result.failed + "\n" +
                                 "Total: " + details.result.total + "\n" + 
-                                "Platform: " + JSON.stringify(details.platform) + ", index: " + findBrowserIndex(details.platform) + "\n" + 
-                                "Component: " + details.result.url.split('/')[5]+ "\n" + 
+                                "Platform: " + JSON.stringify(details.platform) + ", index: " + browserIndex + "\n" + 
+                                "Component: " +  component + "\n" + 
                                 "Time: " + details.result.runtime + "ms"
                                 );
+                    
+                    var componentResults = getComponentResults(component);
+                    if (componentResults) {
+                        componentResults["e" + browserIndex] = {
+                            "passed": details.result.passed,
+                            "total": details.result.total,
+                            "time": Math.ceil(parseFloat(details.result.runtime) / 1000)
+                        }
+                    }
                     return true;
                 }
             }
