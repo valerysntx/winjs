@@ -2,6 +2,8 @@
 (function() {
     "use strict";
 
+    var config = require("../config.js");
+
     var browsers = [{
         browserName: "internet explorer",
         platform: "WIN8.1",
@@ -19,6 +21,21 @@
         platform: "Win8.1",
         version: "34"
     }];
+
+    function findBrowserIndex(browser) {
+        var i = 1;
+        browsers.forEach(function(info) {
+            if (info === browser) {
+                return i;
+            }
+            i++;
+        });
+    }
+
+    browsers.forEach(function(browser) {
+        var name = browser.platform + " / " + browser.browserName + " " + browser.version;
+        config.tests_results.environment.push(name);
+    });
 
     module.exports = {
         all: {
@@ -45,8 +62,9 @@
                                 "Passed: " + details.result.passed + "\n" +
                                 "Failed: " + details.result.failed + "\n" +
                                 "Total: " + details.result.total + "\n" + 
-                                "Platform: " + JSON.stringify(details.platform) + "\n" + 
-                                "Component: " + details.result.url.split('/')[5]
+                                "Platform: " + JSON.stringify(details.platform) + ", index: " + findBrowserIndex(details.platform) + "\n" + 
+                                "Component: " + details.result.url.split('/')[5]+ "\n" + 
+                                "Time: " + details.result.runtime + "ms"
                                 );
                     return true;
                 }
@@ -92,6 +110,7 @@
                                 "Component: " + details.result.url.split('/')[5] + "\n" + 
                                 "Time: " + details.result.runtime + "ms"
                                 );
+                    //xhr call http://winjs-staging.azurewebsites.net/api.aspx
                     return true;
                 }
             }

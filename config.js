@@ -250,4 +250,12 @@
         ],
     };
 
+    //TODO: EXPLAIN
+    config.tests_results = {    
+        "date": new Date(),
+        "environment": [],
+        "results":  []
+    };
+
+
 })();
