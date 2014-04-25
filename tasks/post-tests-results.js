@@ -2,6 +2,16 @@
 (function() {
         "use strict";
 
+        function sortByComponentName(array) {
+            return array.sort(function(a, b) {
+                var aName = a["name"];
+                var bName = b["name"];
+                var x = aName && aName.toLowerCase();
+                var y = bName && bName.toLowerCase();
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
+        }
+
         module.exports = function(grunt) {
             var config = require("../config.js");
 
@@ -23,6 +33,7 @@
                         (mins < 10 ? "0" + mins : mins) + ":" +
                         (secs < 10 ? "0" + secs : secs) + " UTC";
 
+                    config.tests_results.results = sortByComponentName(config.tests_results.results);
                     var data = JSON.stringify(config.tests_results);
                     console.log("Posting test results...");
                     http.post('http://winjs-staging.azurewebsites.net/api.aspx', {
