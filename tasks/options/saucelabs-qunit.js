@@ -92,7 +92,6 @@
                                 "Passed: " + details.result.passed + "\n" +
                                 "Failed: " + details.result.failed + "\n" +
                                 "Total: " + details.result.total + "\n" + 
-                                "Platform: " + JSON.stringify(details.platform) + "\n" + 
                                 "Component: " +  component + "\n" + 
                                 "Time: " + details.result.runtime + "ms"
                                 );
@@ -145,7 +144,6 @@
                                 "Passed: " + details.result.passed + "\n" +
                                 "Failed: " + details.result.failed + "\n" +
                                 "Total: " + details.result.total + "\n" + 
-                                "Platform: " + JSON.stringify(details.platform) + "\n" + 
                                 "Component: " + details.result.url.split('/')[5] + "\n" + 
                                 "Time: " + details.result.runtime + "ms"
                                 );
