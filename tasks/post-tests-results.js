@@ -23,10 +23,12 @@
                         (mins < 10 ? "0" + mins : mins) + ":" +
                         (secs < 10 ? "0" + secs : secs) + " UTC";
 
-                    http.post('http://localhost:57528/api.aspx', {
+                    var data = JSON.stringify(config.tests_results);
+                    console.log("Posting test results...");
+                    http.post('http://winjs-staging.azurewebsites.net/api.aspx', {
                         type: "addresult",
                         name: fileName,
-                        content: JSON.stringify(config.tests_results)
+                        content: data
                     }, function(res) {
                         done();
                     });

@@ -2,7 +2,7 @@
 (function() {
     "use strict";
 
-    var config = require("../config.js");
+    var config = require("../../config.js");
 
     var browsers = [{
         browserName: "internet explorer",
@@ -23,25 +23,45 @@
     }];
 
     function getBrowserIndex(browser) {
-        var i = 1;
-        browsers.forEach(function(info) {
-            if (info === browser) {
-                return i;
+        var index = 0;
+        for (var i = 1; i <= browsers.length; i++) {
+            var info = browsers[i-1];
+
+            if (info.browserName === browser[1] &&
+                info.platform === browser[0] &&
+                info.version === browser[2]) {
+                index = i;
+                break;
             }
-            i++;
-        });
+        }
+        return index;
     }
 
     function getComponentResults(component) {
-        config.tests_results.results.forEach(function(componentInfo) {
+        var info;
+        for (var i = 0; i < config.tests_results.results.length; i++) {
+            var componentInfo = config.tests_results.results[i];
+            if (componentInfo.name === component) {
+                info = componentInfo;
+                break;
+            }
+        }
 
-        });
-        return null;
+        if (!info) {
+            info = {
+                name: component
+            };
+            config.tests_results.results.push(info);
+        }
+        return info;
     }
-
+    var i = 1;
     browsers.forEach(function(browser) {
         var name = browser.platform + " / " + browser.browserName + " " + browser.version;
-        config.tests_results.environment.push(name);
+        var environment = ("e" + i++);
+        var info = {};
+        info[environment] = name;
+        config.tests_results.environment.push(info);
     });
 
     module.exports = {
@@ -72,7 +92,7 @@
                                 "Passed: " + details.result.passed + "\n" +
                                 "Failed: " + details.result.failed + "\n" +
                                 "Total: " + details.result.total + "\n" + 
-                                "Platform: " + JSON.stringify(details.platform) + ", index: " + browserIndex + "\n" + 
+                                "Platform: " + JSON.stringify(details.platform) + "\n" + 
                                 "Component: " +  component + "\n" + 
                                 "Time: " + details.result.runtime + "ms"
                                 );
