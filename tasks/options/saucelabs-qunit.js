@@ -69,6 +69,7 @@
             options: {
                 urls: [
                     "http://127.0.0.1:9999/bin/tests/Animations/test.html?fastanimations=false&autostart=true&testtimeout=100000",
+                    "http://127.0.0.1:9999/bin/tests/Base/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/Binding/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/BindingList/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/BindingTemplate/test.html?fastanimations=true&autostart=true&testtimeout=100000",
@@ -121,7 +122,6 @@
             options: {
                 urls: [    
                     "http://127.0.0.1:9999/bin/tests/AppBarAndFlyouts/test.html?fastanimations=true&autostart=true&testtimeout=100000",
-                    "http://127.0.0.1:9999/bin/tests/Base/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/FlipView/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/Hub/test.html?fastanimations=true&autostart=true&testtimeout=100000",
                     "http://127.0.0.1:9999/bin/tests/ListView/test.html?fastanimations=true&autostart=true&testtimeout=500000",
