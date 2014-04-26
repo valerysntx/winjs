@@ -107,6 +107,7 @@
                     var componentResults = getComponentResults(component);
                     if (componentResults) {
                         componentResults["e" + browserIndex] = {
+                            "url": details.url,
                             "passed": details.result.passed,
                             "total": details.result.total,
                             "time": Math.ceil(parseFloat(details.result.runtime) / 1000)

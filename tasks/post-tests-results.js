@@ -21,8 +21,8 @@
                     http.post = require('http-post');
 
                     var now = new Date();
-                    var month = now.getMonth();
-                    var day = now.getDate();
+                    var month = now.getMonth() + 1;
+                    var day = now.getDate() + 1;
                     var hour = now.getUTCHours();
                     var mins = now.getUTCMinutes();
                     var secs = now.getUTCSeconds();
